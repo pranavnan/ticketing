@@ -1,5 +1,8 @@
 name: tests-auth
-on: pull_request
+on:
+  pull_request:
+    paths: # This will only run if the files inside the auth project changes
+      - 'auth/**'
 jobs:
   build:
     runs-on: ubuntu-latest

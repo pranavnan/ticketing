@@ -1,5 +1,8 @@
 name: tests-payments
-on: pull_request
+on:
+  pull_request:
+    paths: # This will only run if the files inside the payments project changes
+      - 'payments/**'
 jobs:
   build:
     runs-on: ubuntu-latest
