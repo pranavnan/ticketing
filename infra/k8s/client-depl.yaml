@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-depl
+spec: # in the specs we describe how this deployment is supposed to behave
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template: # this template section describe how every pod that is created and managed by this deployment should behave
+    metadata:
+      labels:
+        app: client
+    spec: # how every pod should behave
+      containers:
+        - name: client
+          image: oopdaddy/client
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-srv
+spec:
+  selector:
+    app: client
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+
