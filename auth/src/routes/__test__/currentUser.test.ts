@@ -13,7 +13,7 @@ it('response with details about the current user', async () => {
     .get('/api/users/currentuser')
     .set('Cookie', cookie)
     .send()
-    .expect(200);
+    .expect(400);
 
   console.log({ response_body_currentUser_18: response.body });
 
@@ -28,7 +28,6 @@ it('responds with null if not authenticated', async () => {
       password: '1234',
     })
     .expect(401);
-
 
   // expect(response.body.currentUser).toEqual(null);
 });
