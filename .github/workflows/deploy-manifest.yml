@@ -25,5 +25,5 @@ jobs:
         # Authenticate with DigitalOcean using the provided access token.
       - run: doctl kubernetes cluster kubeconfig save ticketing
         # Save the Kubernetes cluster configuration for 'ticketing' to use with kubectl.
-      - run: kubectl apply -f infra/k8s
+      - run: kubectl apply -f infra/k8s && kubectl apply -f infra/k8s-prod
         # Apply the Kubernetes manifests located in the 'infra/k8s' directory to update the cluster.
