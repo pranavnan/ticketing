@@ -1,0 +1,29 @@
+# This GitHub Actions workflow automates the deployment of Kubernetes manifests.
+# It checks out the repository, authenticates with DigitalOcean, and applies Kubernetes manifests
+# to update the cluster configuration.
+
+# Define the name of the workflow as it appears in the Actions UI.
+name: deploy-manifest
+
+# Configure the event that triggers this workflow.
+on:
+  push:
+    branches:
+      - main # Trigger only on pushes to the main branch.
+    paths:
+      - 'infra/**' # Trigger only when files in the 'infra' directory change.
+
+jobs:
+  build: # Define a job named 'build'.
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner provided by GitHub Actions.
+    steps:
+      - uses: actions/checkout@v2
+        # Check out the repository so the workflow has access to its content.
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+        # Authenticate with DigitalOcean using the provided access token.
+      - run: doctl kubernetes cluster kubeconfig save ticketing
+        # Save the Kubernetes cluster configuration for 'ticketing' to use with kubectl.
+      - run: kubectl apply -f infra/k8s
+        # Apply the Kubernetes manifests located in the 'infra/k8s' directory to update the cluster.
