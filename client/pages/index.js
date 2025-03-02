@@ -11,7 +11,7 @@ function LandingPage({ currentUser = null, tickets = [] }) {
         <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
           View
         </Link>
-        {/* This is called as wildcard route, we have to `Link` and `as` */}
+        {/* This is called as wildcard route, we have to `Link` and `as ` */}
         {/* href => for pointing out the file we want te render if we click on view */}
         {/* as => this is the url we are seeing in the browser */}
       </td>
