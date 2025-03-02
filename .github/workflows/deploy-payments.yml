@@ -1,8 +1,8 @@
-# This GitHub Actions workflow automates the deployment of the auth service.
+# This GitHub Actions workflow automates the deployment of the payments service.
 # It builds the Docker image, pushes it to the Docker registry, and redeploys the service on the Kubernetes cluster.
 
 # Define the name of the workflow as it appears in the Actions UI.
-name: deploy-auth
+name: deploy-payments
 
 # Configure the event that triggers this workflow.
 on:
@@ -10,7 +10,7 @@ on:
     branches:
       - main # Trigger only on pushes to the main branch.
     paths:
-      - 'auth/**' # Trigger only when files in the auth directory change.
+      - 'payments/**' # Trigger only when files in the payments directory change.
 
 jobs:
   build: # Define a job named 'build'.
@@ -18,14 +18,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         # Check out your repository so the workflow has access to its content.
-      - run: cd auth && docker build -t oopdaddy/auth .
-        # Change to the auth directory and build a Docker image tagged 'oopdaddy/auth'.
+      - run: cd payments && docker build -t oopdaddy/payments .
+        # Change to the payments directory and build a Docker image tagged 'oopdaddy/payments'.
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         # Log in to Docker registry using credentials from secrets; required to push the image.
-      - run: docker push oopdaddy/auth
+      - run: docker push oopdaddy/payments
         # Push the built Docker image to your Docker registry.
       - uses: digitalocean/action-doctl@v2
         with:
@@ -33,5 +33,5 @@ jobs:
         # Use the doctl action to interact with DigitalOcean; the token authenticates API requests.
       - run: doctl kubernetes cluster kubeconfig save ticketing
         # Save the Kubernetes cluster configuration for 'ticketing' to use with kubectl.
-      - run: kubectl rollout restart deployment auth-depl
-        # Restart the Kubernetes deployment 'auth-depl' to roll out the new Docker image.
+      - run: kubectl rollout restart deployment payments-depl
+        # Restart the Kubernetes deployment 'payments-depl' to roll out the new Docker image.
