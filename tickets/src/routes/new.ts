@@ -36,7 +36,6 @@ router.post(
       userId: ticket.userId,
       version: ticket.version,
     });
-
     res.status(201).json(ticket);
   }
 );
